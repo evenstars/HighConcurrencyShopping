@@ -14,7 +14,6 @@ public class RedisService {
   @Autowired
   JedisPool jedisPool;
 
-
   public <T> T get(KeyPrefix prefix,String key,Class<T> clazz){
     Jedis jedis = null;
     try {
@@ -49,6 +48,7 @@ public class RedisService {
       if (str == null || str.isEmpty())
         return false;
       String realKey = prefix.getPrefix()+key;
+      System.out.println("key in redis: "+realKey);
       int expireTime = prefix.expireSeconds();
       if (expireTime==0)
         jedis.set(realKey,str);
