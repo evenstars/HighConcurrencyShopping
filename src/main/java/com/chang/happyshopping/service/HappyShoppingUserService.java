@@ -5,6 +5,7 @@ import com.chang.happyshopping.domain.HappyShoppingUser;
 import com.chang.happyshopping.exception.GlobalException;
 import com.chang.happyshopping.redis.RedisService;
 import com.chang.happyshopping.redis.SeckillUserKey;
+import com.chang.happyshopping.redis.UserKey;
 import com.chang.happyshopping.result.CodeMsg;
 import com.chang.happyshopping.utils.MD5Util;
 import com.chang.happyshopping.utils.UUIDUtil;
@@ -28,7 +29,27 @@ public class HappyShoppingUserService {
   RedisService redisService;
 
   public HappyShoppingUser getById(long id){
-    return happyShoppingUserDAO.getById(id);
+    HappyShoppingUser user = redisService.get(SeckillUserKey.getById,String.valueOf(id),HappyShoppingUser.class);
+    if (user!=null)
+      return user;
+    user = happyShoppingUserDAO.getById(id);
+    if (user!=null)
+      redisService.set(SeckillUserKey.getById,String.valueOf(id),user);
+    return user;
+  }
+
+  public boolean updatePassword(String token,long id,String formPass){
+    HappyShoppingUser user = getById(id);
+    if (user==null)
+      throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+    HappyShoppingUser newUser = new HappyShoppingUser();
+    newUser.setId(id);
+    newUser.setPassword(MD5Util.formPassToServerPass(formPass,user.getSalt()));
+    happyShoppingUserDAO.update(newUser);
+    redisService.delete(SeckillUserKey.getById,String.valueOf(id));
+    user.setPassword(newUser.getPassword());
+    redisService.set(SeckillUserKey.token,token,user);
+    return true;
   }
 
   public boolean login(HttpServletResponse response,LoginVo loginVo) {

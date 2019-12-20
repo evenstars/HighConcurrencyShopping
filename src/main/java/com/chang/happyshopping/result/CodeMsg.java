@@ -19,6 +19,13 @@ public class CodeMsg {
   public static CodeMsg PASSWORD_ERROR = new CodeMsg(500235,"password error");
 
   public static CodeMsg BING_ERROR = new CodeMsg(500235,"parameter check error:%s");
+
+  //sec kill module
+  public static CodeMsg STOCK_EMPTY = new CodeMsg(500236,"sec kill goods is over");
+
+  public static CodeMsg REPEAT_PURCHASE = new CodeMsg(500240,"cannot purchase multiple times");
+
+
   public CodeMsg fillArgs(Object...args){
     int code = this.code;
     String message = String.format(this.msg,args);

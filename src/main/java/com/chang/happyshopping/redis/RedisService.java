@@ -40,6 +40,19 @@ public class RedisService {
     }
   }
 
+  public boolean delete(KeyPrefix prefix,String key){
+    Jedis jedis = null;
+    try {
+      jedis = jedisPool.getResource();
+      String realKey = prefix.getPrefix()+key;
+      long ret = jedis.del(realKey);
+      return ret>0;
+    }
+    finally {
+      returnToPool(jedis);
+    }
+  }
+
   public <T> boolean set(KeyPrefix prefix,String key,T value){
     Jedis jedis = null;
     try {
@@ -85,7 +98,7 @@ public class RedisService {
     }
   }
 
-  private <T> String beanToString(T value) {
+  public static <T> String beanToString(T value) {
     if (value == null)
       return null;
     Class<?> clazz = value.getClass();
@@ -103,7 +116,7 @@ public class RedisService {
     }
   }
 
-  private <T> T stringToBean(String str,Class<T> clazz) {
+  public static <T> T stringToBean(String str,Class<T> clazz) {
     if (str==null || str.isEmpty()||clazz==null)
       return null;
     if (clazz == int.class || clazz==Integer.class){
