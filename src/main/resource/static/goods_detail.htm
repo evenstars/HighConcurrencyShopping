@@ -92,7 +92,7 @@ function getMiaoshaPath(){
 	var goodsId = $("#goodsId").val();
 	g_showLoading();
 	$.ajax({
-		url:"/miaosha/path",
+		url:"/seckill/path",
 		type:"GET",
 		data:{
 			goodsId:goodsId,
@@ -115,7 +115,7 @@ function getMiaoshaPath(){
 function getMiaoshaResult(goodsId){
 	g_showLoading();
 	$.ajax({
-		url:"/miaosha/result",
+		url:"/seckill/result",
 		type:"GET",
 		data:{
 			goodsId:$("#goodsId").val(),
@@ -150,7 +150,7 @@ function getMiaoshaResult(goodsId){
 
 function doMiaosha(path){
 	$.ajax({
-		url:"/seckill/"+path+"/do_seckill",
+		url:"/seckill/"+path+"/do_seckill2",
 		type:"POST",
 		data:{
 			goodsId:$("#goodsId").val()
@@ -229,7 +229,7 @@ function countDown(){
 			clearTimeout(timeout);
 		}
 		$("#miaoshaTip").html("秒杀进行中");
-		$("#verifyCodeImg").attr("src", "/miaosha/verifyCode?goodsId="+$("#goodsId").val());
+		$("#verifyCodeImg").attr("src", "/seckill/verifyCode?goodsId="+$("#goodsId").val());
 		$("#verifyCodeImg").show();
 		$("#verifyCode").show();
 	}else{//秒杀已经结束
@@ -240,7 +240,7 @@ function countDown(){
 	}
 }
 function refreshVerifyCode(){
-	$("#verifyCodeImg").attr("src", "/miaosha/verifyCode?goodsId="+$("#goodsId").val()+"&timestamp="+new Date().getTime());
+	$("#verifyCodeImg").attr("src", "/seckill/verifyCode?goodsId="+$("#goodsId").val()+"&timestamp="+new Date().getTime());
 }
 </script>
 </html>

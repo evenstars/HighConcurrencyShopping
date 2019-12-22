@@ -25,6 +25,10 @@ public class CodeMsg {
 
   public static CodeMsg REPEAT_PURCHASE = new CodeMsg(500240,"cannot purchase multiple times");
 
+  public static CodeMsg SESSION_ERROR = new CodeMsg(500241,"session errer");
+  public static CodeMsg REQUEST_ILLEGAL = new CodeMsg(500242,"illegal path");
+  public static CodeMsg ACCESS_LIMIT_MAX = new CodeMsg(500243,"visit too frequent");
+
 
   public CodeMsg fillArgs(Object...args){
     int code = this.code;
